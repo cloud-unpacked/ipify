@@ -12,7 +12,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/cloud-unpacked/ippi/api"
+	"github.com/cloud-unpacked/ippi/ippi/api"
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/cors"
 )

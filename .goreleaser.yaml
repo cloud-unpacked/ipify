@@ -1,0 +1,39 @@
+project_name: ippi
+
+builds:
+  - dir: ippi
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=0
+
+archives:
+  - format: tar.gz
+    name_template: >-
+      {{ .ProjectName }}-v{{ .Version }}-{{ .Os }}-{{ .Arch }}
+    files:
+      - LICENSE
+      - README.md
+
+nfpms:
+  - file_name_template: "{{ .ProjectName }}-v{{ .Version }}-{{ .Arch }}"
+    vendor: "Cloud Unpacked"
+    homepage: "https://www.CloudUnpacked.com"
+    maintainer: "Ricardo N Feliciano <Ricardo@Feliciano.Tech>"
+    description: "A simple public IP address API"
+    license: MIT
+    formats:
+      - deb
+    bindir: /usr/bin
+
+checksum:
+  name_template: "{{ .ProjectName }}-v{{ .Version }}-checksums.txt"
+
+announce:
+  skip: "{{ gt .Patch 0 }}"
+  mastodon:
+    enabled: true
+    server: "https://nanobyte.cafe"
