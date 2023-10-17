@@ -1,0 +1,63 @@
+variables:
+  grv: &goreleaser-version "1.21.1"
+  gv: &go-version "1.21.3"
+
+version: 2.1
+
+orbs:
+  gor: hubci/goreleaser@2.4
+
+workflows:
+  main-wf:
+    jobs:
+      - test
+      - gor/release:
+          name: goreleaser-snapshot
+          version: *goreleaser-version
+          go-version: *go-version
+          dry-run: true
+          post-steps:
+            - persist_to_workspace:
+                root: "."
+                paths:
+                  - "dist"
+  release-wf:
+    jobs:
+      - test:
+          filters: &semverFilters
+            branches:
+              ignore: /.*/
+            tags:
+              # SemVer regex
+              only: /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/
+      - gor/release:
+          name: goreleaser-publish
+          version: *goreleaser-version
+          go-version: *go-version
+          filters: *semverFilters
+          post-steps:
+            - persist_to_workspace:
+                root: "."
+                paths:
+                  - "dist"
+          context: goreleaser-ctx
+
+jobs:
+  test:
+    docker:
+      - image: cimg/go:1.21
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - go-mod-v1
+      - run:
+          name: "Download Dependancies"
+          command: go mod download
+      - run:
+          name: "Run Tests"
+          command: go test ./...
+      - save_cache:
+          key: go-mod-v1
+          paths:
+            - "/go/pkg/mod"

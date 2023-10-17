@@ -12,7 +12,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/cloud-unpacked/ippi/models"
+	"github.com/cloud-unpacked/ippi/ippi/models"
 	"github.com/julienschmidt/httprouter"
 )
 
