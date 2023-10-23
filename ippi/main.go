@@ -35,7 +35,7 @@ func main() {
 	// Start the server.
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "3000"
+		port = "9000"
 	}
 
 	log.Println("Starting HTTP server on port:", port)
