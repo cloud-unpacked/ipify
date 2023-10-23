@@ -126,5 +126,5 @@ jobs:
             if [ "<< parameters.environment >>" == "production" ]; then
 
               echo "Deploying to production."
-              kubectl set image --namespace=cloud-unpacked deployment/ippi app=<< pipeline.git.tag >>
+              kubectl set image --namespace=cloud-unpacked deployment/ippi app=ghcr.io/cloud-unpacked/ippi:<< pipeline.git.tag >>
             fi
