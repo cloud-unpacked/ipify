@@ -29,6 +29,13 @@ nfpms:
       - deb
     bindir: /usr/bin
 
+dockers:
+- image_templates:
+  - "ghcr.io/cloud-unpacked/ippi:{{ .Version }}"
+  - "ghcr.io/cloud-unpacked/ippi:{{ if .IsSnapshot }}staging{{ else }}v{{ .Major }}.{{ .Minor }}{{ end }}"
+  - "ghcr.io/cloud-unpacked/ippi:latest"
+  dockerfile: goreleaser.Dockerfile
+
 checksum:
   name_template: "{{ .ProjectName }}-v{{ .Version }}-checksums.txt"
 
