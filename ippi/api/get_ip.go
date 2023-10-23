@@ -33,6 +33,11 @@ func GetIP(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	// Wikipedia page: https://en.wikipedia.org/wiki/X-Forwarded-For
 	ip := net.ParseIP(strings.Split(r.Header.Get("X-Forwarded-For"), ",")[0]).String()
 
+	// if we didn't get an IP via header, use the request IP
+	if ip == "" {
+		ip = r.RemoteAddr
+	}
+
 	// If the user specifies a 'format' querystring, we'll try to return the
 	// user's IP address in the specified format.
 	if format, ok := r.Form["format"]; ok && len(format) > 0 {
