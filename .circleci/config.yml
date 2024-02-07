@@ -108,7 +108,7 @@ jobs:
           at: .
       - k8s/install-kubeconfig
       - k8s/install-kubectl:
-          kubectl-version: "v1.27.6"
+          kubectl-version: "v1.28.6"
       - run:
           name: "Deploy"
           command: |
