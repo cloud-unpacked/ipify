@@ -45,8 +45,16 @@ metadata:
   name: ippi
   labels:
     app: ippi
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
 spec:
-  ingressClassName: caddy
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - ippi.cloudunpacked.com
+    - 4.ippi.cloudunpacked.com
+    - 6.ippi.cloudunpacked.com
+    secretName: ippi-tls
   rules:
   - host: ippi.cloudunpacked.com
     http:
